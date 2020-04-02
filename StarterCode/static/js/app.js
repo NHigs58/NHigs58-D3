@@ -8,8 +8,8 @@ function getPlots(id) {
         console.log(sampleValues)
         var labels =  sampledata.samples[0].otu_labels.slice(0,10);
         console.log(labels)
-        var wfreq = sampledata.metadata[0].wfreq;
-        console.log(wfreq)
+        var result = sampledata.metadata.filter(meta => meta.id.toString() === id)[0];
+        console.log(result.wfreq)
     // get only top 10 otu ids for the plot OTU and reversing it. 
         var OTU_top = ( sampledata.samples[0].otu_ids.slice(0, 10)).reverse();
     // get the otu id's to the desired form for the plot
@@ -50,7 +50,7 @@ function getPlots(id) {
      // Data for the gauge chart
      var data = [{
         domain: { x: [0, 1], y: [0, 1] },
-        value: wfreq,
+        value: result.wfreq,
         title: { text: "Belly Button Washing Frequency (per Week)" },
         type: "indicator",
         mode: "gauge+number",
@@ -114,6 +114,7 @@ function getDemoInfo(id) {
 
       // filter meta data info by id
        var result = metadata.filter(meta => meta.id.toString() === id)[0];
+       
       // select demographic panel to put data
        var demographicInfo = d3.select("#sample-metadata");
         
@@ -131,7 +132,6 @@ function optionChanged(id) {
     getPlots(id);
     getDemoInfo(id);
 }
-
 // create the function for the initial data rendering
 function init() {
     // select dropdown menu 
