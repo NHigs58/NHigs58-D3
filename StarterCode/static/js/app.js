@@ -7,7 +7,9 @@ function getPlots(id) {
         var sampleValues =  sampledata.samples[0].sample_values.slice(0,10).reverse();
         console.log(sampleValues)
         var labels =  sampledata.samples[0].otu_labels.slice(0,10);
-        console.log (labels)
+        console.log(labels)
+        var wfreq = sampledata.metadata[0].wfreq;
+        console.log(wfreq)
     // get only top 10 otu ids for the plot OTU and reversing it. 
         var OTU_top = ( sampledata.samples[0].otu_ids.slice(0, 10)).reverse();
     // get the otu id's to the desired form for the plot
@@ -44,6 +46,35 @@ function getPlots(id) {
 
         // create the bar plot
     Plotly.newPlot("bar", data, layout);
+
+     // Data for the gauge chart
+     var data = [{
+        domain: { x: [0, 1], y: [0, 1] },
+        value: wfreq,
+        title: { text: "Belly Button Washing Frequency (per Week)" },
+        type: "indicator",
+        mode: "gauge+number",
+        // label: ["0-1","0-1","0-1","0-1","0-1","0-1","0-1","0-1","0-1","0-1"],
+        gauge: {
+            axis: { range: [0, 9] },
+            bar: { color: "#585858" },
+            steps: [
+                { range: [0, 1], color: "rgb(247, 240, 232)" },
+                { range: [1, 2], color: "rgb(242, 238, 222)" },
+                { range: [2, 3], color: "rgb(228, 226, 189)" },
+                { range: [3, 4], color: "rgb(223, 229, 161)" },
+                { range: [4, 5], color: "rgb(203, 225, 136)" },
+                { range: [5, 6], color: "rgb(169, 196, 125)"},
+                { range: [6, 7], color: "rgb(121, 182, 115)"},
+                { range: [7, 8], color: "rgb(120, 177, 123)"},
+                { range: [8, 9], color: "rgb(115, 169, 117)"}
+            ]
+        }
+    }];
+
+    // Plot gauge chart
+    Plotly.newPlot("gauge", data);
+
         // The bubble chart
         var trace1 = {
             x: sampledata.samples[0].otu_ids,
